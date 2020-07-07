@@ -1,18 +1,19 @@
 
-function Plots(id) {
+function Plots(sample) {
+    var url = "/samples/" + sample;
     //reading in json data
-    d3.json('../samples.json').then(sampledata =>{
+    d3.json(url).then(sampledata =>{
         //console.log(sampledata)
 
     var ids = sampledata.samples[0].otu_ids;
-    var subjID = sampledata.samples.filter(d => d.id.toString() === id)[0];  
+    var subjID = sampledata.samples.filter(d => d.sample.toString() === sample)[0];  
     //console.log(ids);
     //console.log(subjID);
 
     var sampleValues = subjID.sample_values.slice(0,10);
     //console.log(sampleValues)
 
-    var allLabels = sampledata.samples[0].otu_labels; 
+    //var allLabels = sampledata.samples[0].otu_labels; 
     var labels = subjID.otu_labels.slice(0,10);
     //console.log(labels);
     
@@ -75,13 +76,16 @@ function Plots(id) {
     });
 }
 
-function getInfo(id) {
-    d3.json('../samples.json').then(data =>{
+function getInfo(sample) {
+
+    var url = "/metadata/" + sample;
+
+    d3.json(url).then(data =>{
 
         var metadata = data.metadata;
         //console.log(metadata)
 
-        var result = metadata.filter(meta => meta.id.toString() === id)[0];
+        var result = metadata.filter(meta => meta.sample.toString() === sample)[0];
         //console.log(result);
         var demoInfo = d3.select("#sample-metadata");
 
